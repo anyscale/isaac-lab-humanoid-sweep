@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pkl
+*.pt
+*.log
+training_log.txt
+media/
+iframe_figures/
+.env
+.ipynb_checkpoints/
