@@ -4,7 +4,9 @@ __pycache__/
 *.pt
 *.log
 training_log.txt
-media/
+# media/
+!media/
+!media/*
 iframe_figures/
 .env
 .ipynb_checkpoints/

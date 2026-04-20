@@ -51,8 +51,8 @@ def evaluate_config(config_id, config, checkpoint_path, num_envs=20, num_steps=1
         'pass_rate': pass_rate, 'num_episodes': len(episode_rewards),
         'std_reward': float(np.std(episode_rewards)) if episode_rewards else 0.0}
 
-obs_noise_levels = [0.0, 0.02, 0.05, 0.1, 0.2]
-action_noise_levels = [0.0, 0.02, 0.05, 0.1, 0.2]
+obs_noise_levels = [0.0, 0.1]
+action_noise_levels = [0.0, 0.1]
 configs = [{'obs_noise_std': on, 'action_noise_std': an} for on, an in itertools.product(obs_noise_levels, action_noise_levels)]
 print(f'Launching {len(configs)} configs...')
 start = time.time()
