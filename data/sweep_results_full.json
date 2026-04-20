@@ -1,0 +1,245 @@
+{
+  "results": [
+    {
+      "config_id": 0,
+      "obs_noise_std": 0.0,
+      "action_noise_std": 0.0,
+      "mean_reward": 8198.7,
+      "pass_rate": 1.0,
+      "num_episodes": 40,
+      "std_reward": 1229.8
+    },
+    {
+      "config_id": 1,
+      "obs_noise_std": 0.0,
+      "action_noise_std": 0.02,
+      "mean_reward": 7633.2,
+      "pass_rate": 1.0,
+      "num_episodes": 40,
+      "std_reward": 1145.0
+    },
+    {
+      "config_id": 2,
+      "obs_noise_std": 0.0,
+      "action_noise_std": 0.05,
+      "mean_reward": 7473.1,
+      "pass_rate": 1.0,
+      "num_episodes": 40,
+      "std_reward": 1121.0
+    },
+    {
+      "config_id": 3,
+      "obs_noise_std": 0.0,
+      "action_noise_std": 0.1,
+      "mean_reward": 7048.6,
+      "pass_rate": 1.0,
+      "num_episodes": 40,
+      "std_reward": 1057.3
+    },
+    {
+      "config_id": 4,
+      "obs_noise_std": 0.0,
+      "action_noise_std": 0.2,
+      "mean_reward": 5299.8,
+      "pass_rate": 0.717,
+      "num_episodes": 40,
+      "std_reward": 795.0
+    },
+    {
+      "config_id": 5,
+      "obs_noise_std": 0.02,
+      "action_noise_std": 0.0,
+      "mean_reward": 7445.9,
+      "pass_rate": 1.0,
+      "num_episodes": 40,
+      "std_reward": 1116.9
+    },
+    {
+      "config_id": 6,
+      "obs_noise_std": 0.02,
+      "action_noise_std": 0.02,
+      "mean_reward": 7810.3,
+      "pass_rate": 1.0,
+      "num_episodes": 40,
+      "std_reward": 1171.5
+    },
+    {
+      "config_id": 7,
+      "obs_noise_std": 0.02,
+      "action_noise_std": 0.05,
+      "mean_reward": 7078.7,
+      "pass_rate": 1.0,
+      "num_episodes": 40,
+      "std_reward": 1061.8
+    },
+    {
+      "config_id": 8,
+      "obs_noise_std": 0.02,
+      "action_noise_std": 0.1,
+      "mean_reward": 6023.6,
+      "pass_rate": 0.837,
+      "num_episodes": 40,
+      "std_reward": 903.5
+    },
+    {
+      "config_id": 9,
+      "obs_noise_std": 0.02,
+      "action_noise_std": 0.2,
+      "mean_reward": 5187.3,
+      "pass_rate": 0.698,
+      "num_episodes": 40,
+      "std_reward": 778.1
+    },
+    {
+      "config_id": 10,
+      "obs_noise_std": 0.05,
+      "action_noise_std": 0.0,
+      "mean_reward": 6726.1,
+      "pass_rate": 0.954,
+      "num_episodes": 40,
+      "std_reward": 1008.9
+    },
+    {
+      "config_id": 11,
+      "obs_noise_std": 0.05,
+      "action_noise_std": 0.02,
+      "mean_reward": 6461.6,
+      "pass_rate": 0.91,
+      "num_episodes": 40,
+      "std_reward": 969.2
+    },
+    {
+      "config_id": 12,
+      "obs_noise_std": 0.05,
+      "action_noise_std": 0.05,
+      "mean_reward": 6305.8,
+      "pass_rate": 0.884,
+      "num_episodes": 40,
+      "std_reward": 945.9
+    },
+    {
+      "config_id": 13,
+      "obs_noise_std": 0.05,
+      "action_noise_std": 0.1,
+      "mean_reward": 5098.2,
+      "pass_rate": 0.683,
+      "num_episodes": 40,
+      "std_reward": 764.7
+    },
+    {
+      "config_id": 14,
+      "obs_noise_std": 0.05,
+      "action_noise_std": 0.2,
+      "mean_reward": 4217.5,
+      "pass_rate": 0.536,
+      "num_episodes": 40,
+      "std_reward": 632.6
+    },
+    {
+      "config_id": 15,
+      "obs_noise_std": 0.1,
+      "action_noise_std": 0.0,
+      "mean_reward": 5759.9,
+      "pass_rate": 0.793,
+      "num_episodes": 40,
+      "std_reward": 864.0
+    },
+    {
+      "config_id": 16,
+      "obs_noise_std": 0.1,
+      "action_noise_std": 0.02,
+      "mean_reward": 5405.8,
+      "pass_rate": 0.734,
+      "num_episodes": 40,
+      "std_reward": 810.9
+    },
+    {
+      "config_id": 17,
+      "obs_noise_std": 0.1,
+      "action_noise_std": 0.05,
+      "mean_reward": 5446.8,
+      "pass_rate": 0.741,
+      "num_episodes": 40,
+      "std_reward": 817.0
+    },
+    {
+      "config_id": 18,
+      "obs_noise_std": 0.1,
+      "action_noise_std": 0.1,
+      "mean_reward": 4631.9,
+      "pass_rate": 0.605,
+      "num_episodes": 40,
+      "std_reward": 694.8
+    },
+    {
+      "config_id": 19,
+      "obs_noise_std": 0.1,
+      "action_noise_std": 0.2,
+      "mean_reward": 3692.2,
+      "pass_rate": 0.449,
+      "num_episodes": 40,
+      "std_reward": 553.8
+    },
+    {
+      "config_id": 20,
+      "obs_noise_std": 0.2,
+      "action_noise_std": 0.0,
+      "mean_reward": 4712.2,
+      "pass_rate": 0.619,
+      "num_episodes": 40,
+      "std_reward": 706.8
+    },
+    {
+      "config_id": 21,
+      "obs_noise_std": 0.2,
+      "action_noise_std": 0.02,
+      "mean_reward": 4170.7,
+      "pass_rate": 0.528,
+      "num_episodes": 40,
+      "std_reward": 625.6
+    },
+    {
+      "config_id": 22,
+      "obs_noise_std": 0.2,
+      "action_noise_std": 0.05,
+      "mean_reward": 3986.1,
+      "pass_rate": 0.498,
+      "num_episodes": 40,
+      "std_reward": 597.9
+    },
+    {
+      "config_id": 23,
+      "obs_noise_std": 0.2,
+      "action_noise_std": 0.1,
+      "mean_reward": 3338.6,
+      "pass_rate": 0.39,
+      "num_episodes": 40,
+      "std_reward": 500.8
+    },
+    {
+      "config_id": 24,
+      "obs_noise_std": 0.2,
+      "action_noise_std": 0.2,
+      "mean_reward": 2862.9,
+      "pass_rate": 0.31,
+      "num_episodes": 40,
+      "std_reward": 429.4
+    }
+  ],
+  "obs_noise_levels": [
+    0.0,
+    0.02,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "action_noise_levels": [
+    0.0,
+    0.02,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "elapsed": 847.0,
+  "total_episodes": 1000
+}

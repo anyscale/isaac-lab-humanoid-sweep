@@ -11,9 +11,9 @@ Train, evaluate, and stress-test robot policies at scale on Anyscale using plain
 </p>
 
 **Three steps:**
-1. **Wrap** the simulator. `env.py` isolates Isaac Lab in a subprocess via `multiprocessing.Pipe`
-2. **`@ray.remote(num_gpus=1)`** turns any function into a distributed GPU task
-3. **Fan out.** Ray schedules 25 configs across 4 GPUs and aggregates results
+1. **Wrap** the simulator → `env.py` isolates Isaac Lab in a subprocess via `multiprocessing.Pipe`
+2. **`@ray.remote(num_gpus=1)`** → any function becomes a distributed GPU task
+3. **Fan out** → Ray schedules 25 configs across 4 GPUs, aggregates results
 
 ```python
 @ray.remote(num_gpus=1)
@@ -35,7 +35,7 @@ results = ray.get(futures)
 |-----------|-------------|------|
 | **Distributed PPO training** | GPU workers collect rollouts in parallel, driver updates policy | ~2 hrs |
 | **Robustness sweep** | 25 perturbation configs evaluated across 4 GPUs | ~40 min |
-| **Deployment insight** | Heatmaps show exactly where the policy is safe vs where it fails | instant |
+| **Deployment insight** | Heatmaps show exactly where the policy is safe vs fails | instant |
 
 ---
 
@@ -47,7 +47,7 @@ Robots trained in simulation often fail in the real world.
 
 **Reality has:** sensor noise, actuator wear, unpredictable conditions.
 
-This demo closes that gap. Fan out many slightly different environments in parallel and measure exactly where the policy breaks, in minutes instead of hours.
+This demo closes that gap. You fan out many slightly different environments in parallel and measure exactly where the policy breaks — in minutes, not hours.
 
 ---
 
@@ -63,9 +63,9 @@ Before deploying, test the policy under real-world conditions:
 | **Outdoor field** | Dust, temperature swings | **Needs service** | Overdue maintenance |
 | **Rain / dust** | Degraded, wet, dirty | **End of life** | Worn bearings, backlash |
 
-5 x 5 = **25 configs**, each running 20 parallel humanoids for 1500 steps on a GPU.
+5 × 5 = **25 configs**, each running 20 parallel humanoids for 1500 steps on a GPU.
 
-**Result:** Policy passes 100% in clean conditions, drops to 31% in rain with end-of-life motors. Safe to deploy up to factory floor with serviced motors.
+**Result:** "Policy passes 100% in clean conditions, drops to 31% in rain with end-of-life motors. Safe to deploy up to factory floor with serviced motors."
 
 ---
 
@@ -89,13 +89,13 @@ Before deploying, test the policy under real-world conditions:
 
 | File | Description |
 |------|-------------|
-| `isaac_lab_ray_core_DEMO.ipynb` | **Start here.** End-to-end notebook with plots and dashboard |
+| `isaac_lab_ray_core_DEMO.ipynb` | **Start here** end-to-end notebook with plots and dashboard |
 | `run_sweep.py` | Standalone robustness sweep script (runs from terminal) |
-| `env.py` | Isaac Lab wrapper with subprocess isolation, `.reset()` / `.step()` |
-| `train_general.py` | Distributed PPO training for any Isaac Lab task |
+| `env.py` | Isaac Lab wrapper — subprocess isolation, `.reset()` / `.step()` |
+| `train_general.py` | Distributed PPO training, any Isaac Lab task |
 | `sweep_eval.py` | Sweep evaluation utilities |
-| `eval_pretrained.py` | Quick evaluation of a pre-trained checkpoint |
-| `Containerfile` | Anyscale image with Ray + Isaac Sim 5.1 + Isaac Lab |
+| `eval_pretrained.py` | Quick evaluation of pre-trained checkpoint |
+| `Containerfile` | Anyscale image: Ray + Isaac Sim 5.1 + Isaac Lab |
 | `media/` | Plots, GIFs, architecture diagram |
 
 ---
@@ -110,9 +110,9 @@ Before deploying, test the policy under real-world conditions:
 
 ### 2. Run the notebook
 
-Open `isaac_lab_ray_core_DEMO.ipynb` and **Run All**.
+Open `isaac_lab_ray_core_DEMO_v1.ipynb` and **Run All**.
 
-The notebook loads pre-computed sweep results from JSON, so **plots render instantly with no GPU wait.** To run a live sweep, uncomment the sweep cell.
+The notebook loads pre-computed sweep results from JSON — **plots render instantly, no GPU wait.** To run a live sweep, uncomment the sweep cell.
 
 ### 3. Run the sweep from terminal
 
@@ -120,7 +120,7 @@ The notebook loads pre-computed sweep results from JSON, so **plots render insta
 python run_sweep.py
 ```
 
-This launches 25 configs across 4 GPUs and saves results to `/mnt/cluster_storage/sweep_results_full.json`. Takes about 40 minutes.
+This launches 25 configs across 4 GPUs, saves results to `/mnt/cluster_storage/sweep_results_full.json`. Takes ~40 min.
 
 ### 4. Train from scratch (optional)
 
@@ -137,7 +137,7 @@ python train_general.py \
 
 ## Environment wrapper
 
-`env.py` runs Isaac Lab in a subprocess via `multiprocessing.Pipe`. Isaac Sim needs its own event loop, so this keeps it isolated from Ray.
+`env.py` runs Isaac Lab in a subprocess via `multiprocessing.Pipe`. Isaac Sim's Kit engine needs its own event loop — this keeps it isolated from Ray.
 
 ```python
 from env import IsaacLabDirectEnv
@@ -148,7 +148,7 @@ obs, rewards, dones, infos = env.step(actions)  # numpy in, numpy out
 env.close()
 ```
 
-Works with any Isaac Lab task: Humanoid, Ant, Cartpole, Franka, ANYmal.
+Works with any Isaac Lab task — Humanoid, Ant, Cartpole, Franka, ANYmal.
 
 ---
 
@@ -173,6 +173,6 @@ Converted to PyTorch at `/mnt/cluster_storage/checkpoints/humanoid/checkpoint_pr
 
 ## Notes
 
-- GPU workers boot Isaac Lab on first use (about 2 min for PhysX to load). This is expected.
-- Results save to `/mnt/cluster_storage/sweep_results_full.json`. The notebook reloads from there if the kernel restarts.
+- GPU workers boot Isaac Lab on first use (~2 min for PhysX to load). This is expected.
+- Results save to `/mnt/cluster_storage/sweep_results_full.json` — notebook reloads from there if kernel restarts.
 - The `omni.physx.plugin` warnings in worker logs are normal and can be ignored.
