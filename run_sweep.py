@@ -1,4 +1,7 @@
-import ray, numpy as np, torch, torch.nn as nn, time, json, itertools
+import ray, numpy as np, time, json, itertools
+from ray import serve
+
+from policy_server import PolicyServer
 
 ray.init(runtime_env={'env_vars': {
     'VK_ICD_FILENAMES': '/etc/vulkan/icd.d/nvidia_icd.json',
@@ -6,31 +9,23 @@ ray.init(runtime_env={'env_vars': {
     'OMNI_KIT_ACCEPT_EULA': 'YES', 'ACCEPT_EULA': 'Y',
 }})
 
-class EvalPolicy(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.policy_net = nn.Sequential(nn.Linear(75,400),nn.ELU(),nn.Linear(400,200),nn.ELU(),nn.Linear(200,100),nn.ELU())
-        self.action_mean = nn.Linear(100,21)
-        self.action_log_std = nn.Parameter(torch.zeros(21))
-        self.value_net = nn.Sequential(nn.Linear(75,400),nn.ELU(),nn.Linear(400,200),nn.ELU(),nn.Linear(200,100),nn.ELU(),nn.Linear(100,1))
-    def forward(self, obs):
-        return self.action_mean(self.policy_net(obs))
-
 CHECKPOINT = '/mnt/cluster_storage/checkpoints/humanoid/checkpoint_pretrained.pt'
 
+policy_handle = serve.run(
+    PolicyServer.bind(checkpoint_path=CHECKPOINT),
+    name='policy_server',
+)
+
 @ray.remote(num_gpus=1)
-def evaluate_config(config_id, config, checkpoint_path, num_envs=20, num_steps=1500):
+def evaluate_config(config_id, config, policy_handle, num_envs=20, num_steps=1500):
     from env import IsaacLabDirectEnv
     env = IsaacLabDirectEnv(task='Isaac-Humanoid-Direct-v0', num_envs=num_envs, device='cuda:0')
-    policy = EvalPolicy()
-    policy.load_state_dict(torch.load(checkpoint_path, weights_only=False)['policy'])
-    policy.eval()
     obs = env.reset()
     episode_rewards, ep_rewards = [], np.zeros(num_envs)
     for step in range(num_steps):
         noisy_obs = obs + np.random.normal(0, config['obs_noise_std'], size=obs.shape).astype(np.float32) if config['obs_noise_std'] > 0 else obs
-        with torch.no_grad():
-            actions = torch.clamp(policy(torch.tensor(noisy_obs, dtype=torch.float32)), -1, 1).numpy()
+        result = policy_handle.predict.remote(noisy_obs).result()
+        actions = result['action']
         if config['action_noise_std'] > 0:
             actions = np.clip(actions + np.random.normal(0, config['action_noise_std'], size=actions.shape).astype(np.float32), -1, 1)
         obs, rewards, dones, _ = env.step(actions)
@@ -56,11 +51,14 @@ action_noise_levels = [0.0, 0.1]
 configs = [{'obs_noise_std': on, 'action_noise_std': an} for on, an in itertools.product(obs_noise_levels, action_noise_levels)]
 print(f'Launching {len(configs)} configs...')
 start = time.time()
-futures = [evaluate_config.remote(i, cfg, CHECKPOINT) for i, cfg in enumerate(configs)]
+futures = [evaluate_config.remote(i, cfg, policy_handle) for i, cfg in enumerate(configs)]
 results = ray.get(futures)
 elapsed = time.time() - start
 results.sort(key=lambda r: r['config_id'])
+policy_stats = policy_handle.get_stats.remote().result()
 with open('/mnt/cluster_storage/sweep_results_full.json', 'w') as f:
-    json.dump({'results': results, 'obs_noise_levels': obs_noise_levels, 'action_noise_levels': action_noise_levels, 'elapsed': elapsed, 'total_episodes': sum(r['num_episodes'] for r in results)}, f, indent=2)
+    json.dump({'results': results, 'obs_noise_levels': obs_noise_levels, 'action_noise_levels': action_noise_levels, 'elapsed': elapsed, 'total_episodes': sum(r['num_episodes'] for r in results), 'policy_server': policy_stats}, f, indent=2)
 print(f'Done: {len(results)} configs, {elapsed:.0f}s')
+print(f'Policy server: {policy_stats["total_calls"]} calls, avg {policy_stats["avg_latency_ms"]:.2f}ms')
+serve.shutdown()
 ray.shutdown()
