@@ -460,7 +460,9 @@ class IsaacLabDirectEnv:
     def close(self):
         try:
             self._cmd_parent.send(("close",))
-            self._result_parent.recv()
+            # Isaac Sim's shutdown can hang; don't block forever waiting for the ack.
+            if self._result_parent.poll(5):
+                self._result_parent.recv()
         except (BrokenPipeError, EOFError):
             pass
         self._proc.join(timeout=10)
